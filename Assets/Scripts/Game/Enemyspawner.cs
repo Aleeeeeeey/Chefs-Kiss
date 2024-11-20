@@ -1,4 +1,6 @@
+using NUnit.Framework;
 using UnityEngine;
+using System.Collections.Generic;
 
 public class Enemyspawner : MonoBehaviour
 {
@@ -10,21 +12,65 @@ public class Enemyspawner : MonoBehaviour
 
     public Transform minSpawn, maxSpawn;
 
+    private float despawnDistance;
+
+    private List<GameObject> spawnedEnemies = new List<GameObject>();
+
+    public int checkPerFrame;
+    private int enemyToCheck;
+
     private void Start()
     {
         spawnCounter = timeToSpawn;
+
+        despawnDistance = Vector3.Distance(transform.position, maxSpawn.position) + 4f;
     }
 
     void Update()
     {
-        //ticks down once per second
+        //ticks down per second
         spawnCounter -= Time.deltaTime;
 
         if(spawnCounter <= 0)
         {
             spawnCounter = timeToSpawn;
 
-            Instantiate(bananaSpiderPrefab, SelectSpawnpoint(), transform.rotation);
+            GameObject newEnemy = Instantiate(bananaSpiderPrefab, SelectSpawnpoint(), transform.rotation);
+
+            spawnedEnemies.Add(newEnemy);
+        }
+
+        int checkTarget = enemyToCheck + checkPerFrame;
+
+        while (enemyToCheck < checkTarget)
+        {
+            if(enemyToCheck < spawnedEnemies.Count)
+            {
+                if (spawnedEnemies[enemyToCheck] != null)
+                {
+                    if(Vector3.Distance(transform.position, spawnedEnemies[enemyToCheck].transform.position) > despawnDistance)
+                    {
+                        Destroy(spawnedEnemies[enemyToCheck]);
+
+                        spawnedEnemies.RemoveAt(enemyToCheck);
+                        checkTarget--;
+                    }
+                    else
+                    {
+                        enemyToCheck++;
+                    }
+                }
+                else
+                {
+                    spawnedEnemies.RemoveAt(enemyToCheck);
+                    checkTarget--;
+                }
+            }
+            else
+            {
+                enemyToCheck = 0;
+                checkTarget = 0;
+            }
         }
     }
 
