@@ -9,6 +9,8 @@ public class EnemyDamager : MonoBehaviour
 
     public bool shouldKnockBack;
 
+    public bool destroyParent;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -32,6 +34,11 @@ public class EnemyDamager : MonoBehaviour
             if ( transform.localScale.x == 0f )
             {
                 Destroy(gameObject);
+
+                if (destroyParent == true)
+                {
+                    Destroy(transform.parent.gameObject);
+                }
             }
         }
     }
