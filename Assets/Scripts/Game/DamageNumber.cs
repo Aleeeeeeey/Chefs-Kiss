@@ -8,11 +8,9 @@ public class DamageNumber : MonoBehaviour
     public float lifetime;
     private float lifeCounter;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        lifeCounter = lifetime;
-    }
+    public float floatSpeed = 1f;
+
+
 
     // Update is called once per frame
     void Update()
@@ -27,7 +25,7 @@ public class DamageNumber : MonoBehaviour
             }
         }
 
-        
+        transform.position += Vector3.up * floatSpeed * Time.deltaTime;
     }
 
     public void Setup(int damageDisplay)
