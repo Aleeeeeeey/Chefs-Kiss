@@ -4,6 +4,8 @@ public class ExperienceLevelController : MonoBehaviour
 {
     public static ExperienceLevelController instance;
 
+    public ExpPickup pickup;
+
     private void Awake()
     {
         instance = this;
@@ -26,5 +28,10 @@ public class ExperienceLevelController : MonoBehaviour
     public void GetExp(int amountToGet)
     {
         currentExperience += amountToGet;
+    }
+
+    public void SpawnExp(Vector3 position, int expValue)
+    {
+        Instantiate(pickup, position, Quaternion.identity).expValue = expValue;
     }
 }

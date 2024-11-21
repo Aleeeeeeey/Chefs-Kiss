@@ -16,10 +16,12 @@ public class EnemyController : MonoBehaviour
     public float knockBackTime = .5f;
     private float knockBackCounter;
 
+    public int expToGive = 1;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        target = FindObjectOfType<PlayerMovement>().transform;
+        target = FindFirstObjectByType<PlayerController>().transform;
     }
 
     // Update is called once per frame
@@ -65,6 +67,8 @@ public class EnemyController : MonoBehaviour
         if (health <= 0)
         {
             Destroy(gameObject);
+
+            ExperienceLevelController.instance.SpawnExp(transform.position, expToGive);
         }
 
         DamageNumberController.instance.SpawnDamage(damageToTake, transform.position);
